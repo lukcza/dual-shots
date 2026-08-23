@@ -1,10 +1,6 @@
-import 'dart:io';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:path/path.dart' as p;
-import 'package:path_provider/path_provider.dart';
 
 import '../../../../core/services/lifecycle_manager.dart';
 import '../../../../injection_container.dart';
@@ -18,8 +14,8 @@ import '../bloc/dual_camera_state.dart';
 import '../widgets/camera_overlay_controls.dart';
 import '../widgets/dual_camera_preview_viewport.dart';
 import '../widgets/dual_camera_tutorial_helper.dart';
+import '../widgets/privacy_policy_sheet.dart';
 import '../widgets/shutter_button.dart';
-import 'demo_camera_screen.dart';
 import 'dual_shot_result_preview_screen.dart';
 
 class DualCameraScreen extends StatefulWidget {
@@ -73,6 +69,138 @@ class _DualCameraScreenState extends State<DualCameraScreen>
   @override
   void onAppInactive() {}
 
+  void _showInfoMenu() {
+    HapticFeedback.mediumImpact();
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: const Color(0xFF14141C),
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+      ),
+      builder: (ctx) {
+        return SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(20, 16, 20, 24),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                // Handle
+                Center(
+                  child: Container(
+                    width: 38,
+                    height: 4,
+                    decoration: BoxDecoration(
+                      color: Colors.white24,
+                      borderRadius: BorderRadius.circular(2),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 18),
+                const Text(
+                  'Help & Information',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w800,
+                    letterSpacing: 0.5,
+                  ),
+                ),
+                const SizedBox(height: 16),
+
+                // Option 1: App Tutorial
+                _buildInfoOptionTile(
+                  icon: Icons.school_rounded,
+                  iconColor: const Color(0xFFFFB800),
+                  title: 'Interactive Tutorial',
+                  subtitle: 'Learn how to drag, resize, and capture Dual Shots',
+                  onTap: () {
+                    Navigator.of(ctx).pop();
+                    Future.delayed(const Duration(milliseconds: 250), () {
+                      if (mounted) _showTutorialCoachMark();
+                    });
+                  },
+                ),
+                const SizedBox(height: 10),
+
+                // Option 2: Privacy Policy
+                _buildInfoOptionTile(
+                  icon: Icons.shield_outlined,
+                  iconColor: const Color(0xFF00E676),
+                  title: 'Privacy Policy',
+                  subtitle: '100% on-device processing • Zero data tracking',
+                  onTap: () {
+                    Navigator.of(ctx).pop();
+                    Future.delayed(const Duration(milliseconds: 250), () {
+                      if (mounted) PrivacyPolicySheet.show(context);
+                    });
+                  },
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildInfoOptionTile({
+    required IconData icon,
+    required Color iconColor,
+    required String title,
+    required String subtitle,
+    required VoidCallback onTap,
+  }) {
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(16),
+      child: Container(
+        padding: const EdgeInsets.all(14),
+        decoration: BoxDecoration(
+          color: const Color(0xFF1E1E2A),
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(color: Colors.white12),
+        ),
+        child: Row(
+          children: [
+            Container(
+              padding: const EdgeInsets.all(10),
+              decoration: BoxDecoration(
+                color: iconColor.withOpacity(0.12),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Icon(icon, color: iconColor, size: 22),
+            ),
+            const SizedBox(width: 14),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    title,
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(height: 2),
+                  Text(
+                    subtitle,
+                    style: const TextStyle(
+                      color: Colors.white60,
+                      fontSize: 11,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const Icon(Icons.chevron_right_rounded, color: Colors.white38),
+          ],
+        ),
+      ),
+    );
+  }
+
   void _showTutorialCoachMark() {
     HapticFeedback.mediumImpact();
     final tutorial = DualCameraTutorialHelper.createTutorial(
@@ -100,22 +228,6 @@ class _DualCameraScreenState extends State<DualCameraScreen>
         ),
       );
     }
-  }
-
-  /// Copies a bundled asset to a temp file and returns its path.
-  Future<String> _assetToTempFile(String assetPath, String filename) async {
-    final bytes = await rootBundle.load(assetPath);
-    final temp = await getTemporaryDirectory();
-    final file = File(p.join(temp.path, filename));
-    await file.writeAsBytes(bytes.buffer.asUint8List());
-    return file.path;
-  }
-
-  Future<void> _openDemoPreview() async {
-    HapticFeedback.mediumImpact();
-    Navigator.of(context).push(
-      MaterialPageRoute(builder: (_) => const DemoCameraScreen()),
-    );
   }
 
   @override
@@ -203,7 +315,7 @@ class _DualCameraScreenState extends State<DualCameraScreen>
                     onSwitchRoles: () {
                       _cameraBloc.add(const SwitchCameraRolesEvent());
                     },
-                    onInfoPressed: _showTutorialCoachMark,
+                    onInfoPressed: _showInfoMenu,
                   ),
                 ),
 
@@ -228,67 +340,32 @@ class _DualCameraScreenState extends State<DualCameraScreen>
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        // Left utility icons: Gallery + Demo
-                        Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            GestureDetector(
-                              key: _keyGallery,
-                              onTap: _openSystemGallery,
-                              child: Container(
-                                width: 52,
-                                height: 52,
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  color: const Color(0xFF1E1E28).withOpacity(0.85),
-                                  border: Border.all(
-                                      color: Colors.white30, width: 1.5),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Colors.black.withOpacity(0.4),
-                                      blurRadius: 10,
-                                      offset: const Offset(0, 3),
-                                    ),
-                                  ],
+                        // Left utility icon: System Photo Gallery Button
+                        GestureDetector(
+                          key: _keyGallery,
+                          onTap: _openSystemGallery,
+                          child: Container(
+                            width: 52,
+                            height: 52,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: const Color(0xFF1E1E28).withOpacity(0.85),
+                              border: Border.all(
+                                  color: Colors.white30, width: 1.5),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black.withOpacity(0.4),
+                                  blurRadius: 10,
+                                  offset: const Offset(0, 3),
                                 ),
-                                child: const Icon(
-                                  Icons.photo_library_outlined,
-                                  color: Colors.white,
-                                  size: 24,
-                                ),
-                              ),
+                              ],
                             ),
-                            if (kDebugMode) ...[
-                              const SizedBox(height: 6),
-                              // Demo preview button
-                              GestureDetector(
-                                onTap: _openDemoPreview,
-                                child: Container(
-                                  width: 38,
-                                  height: 22,
-                                  decoration: BoxDecoration(
-                                    color: const Color(0xFFFFB800).withOpacity(0.15),
-                                    borderRadius: BorderRadius.circular(11),
-                                    border: Border.all(
-                                      color: const Color(0xFFFFB800).withOpacity(0.7),
-                                      width: 1,
-                                    ),
-                                  ),
-                                  child: const Center(
-                                    child: Text(
-                                      'DEMO',
-                                      style: TextStyle(
-                                        color: Color(0xFFFFB800),
-                                        fontSize: 8,
-                                        fontWeight: FontWeight.w900,
-                                        letterSpacing: 0.5,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ],
+                            child: const Icon(
+                              Icons.photo_library_outlined,
+                              color: Colors.white,
+                              size: 24,
+                            ),
+                          ),
                         ),
 
                         // Center: Animated Shutter Button with stitching progress
