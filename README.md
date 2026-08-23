@@ -1,4 +1,4 @@
-# Dual Shots - Flutter Clean Architecture
+# Dual Shots
 
 Profesjonalna aplikacja mobilna typu **Dual Shot** (jednoczesne zdjęcie z przedniej i tylnej kamery) stworzona we Flutterze z wykorzystaniem zasad **Clean Architecture**, wzorca **BLoC**, sprzętowego wsparcia **Multi-Camera API** oraz zaawansowanego algorytmu **Pseudo-Dual Fallback**.
 
