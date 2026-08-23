@@ -217,7 +217,7 @@ class _DraggablePiPViewState extends State<DraggablePiPView> {
               ),
               const SizedBox(height: 6),
               Text(
-                isFront ? 'PRZÓD (SELFIE)' : 'TYŁ (GŁÓWNY)',
+                isFront ? 'FRONT (SELFIE)' : 'REAR (MAIN)',
                 style: const TextStyle(
                   color: Colors.white,
                   fontSize: 10,
@@ -242,7 +242,7 @@ class _DraggablePiPViewState extends State<DraggablePiPView> {
                     ),
                     SizedBox(width: 3),
                     Text(
-                      'Dotknij by obrócić',
+                      'Tap to switch',
                       style: TextStyle(
                         color: Colors.white70,
                         fontSize: 8,

@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="100%" height="100%">
+  <defs>
+    <linearGradient id="gold3" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFE082"/>
+      <stop offset="50%" stop-color="#FFB800"/>
+      <stop offset="100%" stop-color="#FF9100"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="512" height="512" rx="112" fill="#0A0A0E" stroke="#22222E" stroke-width="2"/>
+
+  <!-- Left Lens (Rear Camera - Gold) -->
+  <circle cx="195" cy="256" r="95" fill="none" stroke="url(#gold3)" stroke-width="16"/>
+  <circle cx="195" cy="256" r="62" fill="none" stroke="url(#gold3)" stroke-width="5" stroke-opacity="0.5"/>
+  <circle cx="195" cy="256" r="22" fill="url(#gold3)"/>
+  
+  <!-- Right Lens (Front Selfie Camera - Clean White / Chrome) -->
+  <circle cx="317" cy="256" r="95" fill="none" stroke="#FFFFFF" stroke-width="16" stroke-opacity="0.9"/>
+  <circle cx="317" cy="256" r="62" fill="none" stroke="#FFFFFF" stroke-width="5" stroke-opacity="0.4"/>
+  <circle cx="317" cy="256" r="22" fill="#FFFFFF"/>
+
+  <!-- Center Intersecting Focus Ring -->
+  <path d="M 256 195 A 95 95 0 0 1 256 317 A 95 95 0 0 1 256 195 Z" 
+        fill="url(#gold3)" 
+        fill-opacity="0.18"/>
+
+  <!-- Subtle Viewfinder Corner Accents -->
+  <path d="M 70 120 L 70 85 L 105 85" fill="none" stroke="url(#gold3)" stroke-width="4" stroke-linecap="round"/>
+  <path d="M 442 120 L 442 85 L 407 85" fill="none" stroke="#FFFFFF" stroke-width="4" stroke-opacity="0.6" stroke-linecap="round"/>
+  <path d="M 70 392 L 70 427 L 105 427" fill="none" stroke="url(#gold3)" stroke-width="4" stroke-linecap="round"/>
+  <path d="M 442 392 L 442 427 L 407 427" fill="none" stroke="#FFFFFF" stroke-width="4" stroke-opacity="0.6" stroke-linecap="round"/>
+</svg>

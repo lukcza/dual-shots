@@ -37,7 +37,7 @@ class PermissionService implements IPermissionService {
         return const Left(
           PermissionFailure(
             message:
-                'Uprawnienia do kamery zostały trwale zablokowane. Otwórz ustawienia, aby je włączyć.',
+                'Camera permissions are permanently denied. Please open settings to enable them.',
             isPermanentlyDenied: true,
           ),
         );
@@ -46,14 +46,14 @@ class PermissionService implements IPermissionService {
       return const Left(
         PermissionFailure(
           message:
-              'Aplikacja wymaga dostępu do kamery, aby móc wykonywać zdjęcia Dual Shot.',
+              'DualShots requires camera access to take dual-lens photos.',
           isPermanentlyDenied: false,
         ),
       );
     } catch (e) {
       return Left(
         PermissionFailure(
-          message: 'Błąd podczas sprawdzania uprawnień: ${e.toString()}',
+          message: 'Error checking permissions: ${e.toString()}',
         ),
       );
     }

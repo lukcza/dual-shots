@@ -24,9 +24,9 @@ class DualCameraTutorialHelper {
             align: ContentAlign.bottom,
             builder: (context, controller) {
               return _buildSpeechBubble(
-                title: "⚡ Lampa błyskowa",
+                title: "⚡ Flash Control",
                 description:
-                    "Wybierz tryb lampy: Wyłączona, Automatyczna, Zawsze włączona lub Latarka.",
+                    "Select flash mode: Off, Auto, On, or Torch.",
                 stepNumber: 1,
                 totalSteps: 5,
                 onNext: () => controller.next(),
@@ -50,9 +50,9 @@ class DualCameraTutorialHelper {
             align: ContentAlign.bottom,
             builder: (context, controller) {
               return _buildSpeechBubble(
-                title: "🤳 Ruchome okienko PiP",
+                title: "🤳 Draggable PiP Window",
                 description:
-                    "Możesz swobodnie przeciągać okienko w dowolne miejsce na ekranie! Dotknij go, aby szybko zamienić aparaty rolami.",
+                    "Drag the window anywhere on screen! Tap it to quickly swap cameras.",
                 stepNumber: 2,
                 totalSteps: 5,
                 onNext: () => controller.next(),
@@ -74,9 +74,9 @@ class DualCameraTutorialHelper {
             align: ContentAlign.top,
             builder: (context, controller) {
               return _buildSpeechBubble(
-                title: "📸 Przycisk migawki",
+                title: "📸 Shutter Button",
                 description:
-                    "Naciśnij, aby jednocześnie wykonać ujęcie z obu kamer i połączyć je w jedno efektowne zdjęcie!",
+                    "Tap to capture from both cameras simultaneously and merge into one shot!",
                 stepNumber: 3,
                 totalSteps: 5,
                 onNext: () => controller.next(),
@@ -98,9 +98,9 @@ class DualCameraTutorialHelper {
             align: ContentAlign.top,
             builder: (context, controller) {
               return _buildSpeechBubble(
-                title: "🔄 Zamiana aparatów",
+                title: "🔄 Flip Cameras",
                 description:
-                    "Zamień aparat główny z przednim aparatem selfie jednym kliknięciem.",
+                    "Swap the main and front selfie cameras with a single tap.",
                 stepNumber: 4,
                 totalSteps: 5,
                 onNext: () => controller.next(),
@@ -122,9 +122,9 @@ class DualCameraTutorialHelper {
             align: ContentAlign.top,
             builder: (context, controller) {
               return _buildSpeechBubble(
-                title: "🖼️ Galeria zdjęć",
+                title: "🖼️ Photo Gallery",
                 description:
-                    "Otwórz galerię w telefonie, aby przeglądać zapisane zdjęcia Dual Shot.",
+                    "Open your device gallery to browse your saved Dual Shot photos.",
                 stepNumber: 5,
                 totalSteps: 5,
                 isLast: true,
@@ -142,7 +142,7 @@ class DualCameraTutorialHelper {
       colorShadow: Colors.black.withOpacity(0.85),
       paddingFocus: 10,
       opacityShadow: 0.88,
-      textSkip: "ZAMKNIJ",
+      textSkip: "CLOSE",
       textStyleSkip: const TextStyle(
         color: Colors.white70,
         fontWeight: FontWeight.w600,
@@ -230,9 +230,9 @@ class DualCameraTutorialHelper {
                 style: TextButton.styleFrom(
                   foregroundColor: Colors.white60,
                   padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
-                ),
+                  ),
                 child: const Text(
-                  'ZAMKNIJ',
+                  'CLOSE',
                   style: TextStyle(
                     fontSize: 12,
                     fontWeight: FontWeight.w600,
@@ -253,7 +253,7 @@ class DualCameraTutorialHelper {
                   ),
                 ),
                 child: Text(
-                  isLast ? 'ZACZNIJMY!' : 'DALEJ',
+                  isLast ? 'GET STARTED!' : 'NEXT',
                   style: const TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 12,

@@ -178,7 +178,14 @@ class ImageStitcherDataSource implements IImageStitcherDataSource {
       blend: img.BlendMode.alpha,
     );
 
-    // 7. High speed JPEG encoding
+    // 7. Embed EXIF metadata before encoding
+    primaryImg.exif.imageIfd['Software'] = img.IfdValueAscii('DualShots');
+    primaryImg.exif.imageIfd['Artist'] = img.IfdValueAscii('Made with DualShots');
+    primaryImg.exif.imageIfd['ImageDescription'] =
+        img.IfdValueAscii('Dual-lens picture-in-picture photo created with DualShots app');
+    primaryImg.exif.imageIfd['Copyright'] = img.IfdValueAscii('DualShots');
+
+    // 8. High speed JPEG encoding
     final encodedJpg = img.encodeJpg(primaryImg, quality: 92);
 
     final outputFile = File(params.outputPath);

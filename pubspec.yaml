@@ -27,7 +27,7 @@ dependencies:
   uuid: ^4.3.3
   
   # Sharing
-  share_plus: ^10.0.0
+  share_plus: ^9.0.0
 
   # UI & Utilities
   flutter_animate: ^4.5.0
@@ -44,3 +44,5 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+  assets:
+    - assets/demo/

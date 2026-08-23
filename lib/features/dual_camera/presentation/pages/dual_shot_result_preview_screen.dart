@@ -212,12 +212,12 @@ class _DualShotResultPreviewScreenState
                         ),
                         _buildSegmentTab(
                           1,
-                          'Aparat tył',
+                          'Rear Cam',
                           Icons.camera_alt_rounded,
                         ),
                         _buildSegmentTab(
                           2,
-                          'Selfie przód',
+                          'Selfie',
                           Icons.face_rounded,
                         ),
                       ],
@@ -245,7 +245,7 @@ class _DualShotResultPreviewScreenState
                           const SizedBox(width: 8),
                           Expanded(
                             child: Text(
-                              'Zapisano: $_savedLocation',
+                              'Saved: $_savedLocation',
                               style: const TextStyle(
                                 color: Color(0xFF00E676),
                                 fontSize: 11,
@@ -261,32 +261,28 @@ class _DualShotResultPreviewScreenState
                   // Bottom Action Buttons
                   Row(
                     children: [
-                      // Retake Button
-                      Expanded(
-                        flex: 1,
-                        child: OutlinedButton.icon(
-                          onPressed: () {
+                      // Retake IconButton
+                      Tooltip(
+                        message: 'Retake',
+                        child: InkWell(
+                          onTap: () {
                             HapticFeedback.lightImpact();
                             widget.onRetake();
                             Navigator.of(context).pop();
                           },
-                          icon: const Icon(Icons.refresh_rounded,
-                              color: Colors.white70, size: 18),
-                          label: const Text(
-                            'POWTÓRZ',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 12,
-                              fontWeight: FontWeight.w700,
-                              letterSpacing: 0.5,
-                            ),
-                          ),
-                          style: OutlinedButton.styleFrom(
-                            padding: const EdgeInsets.symmetric(vertical: 16),
-                            backgroundColor: const Color(0xFF1A1A24),
-                            side: const BorderSide(color: Colors.white24),
-                            shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(16),
+                          child: Container(
+                            width: 52,
+                            height: 52,
+                            decoration: BoxDecoration(
+                              color: const Color(0xFF1A1A24),
                               borderRadius: BorderRadius.circular(16),
+                              border: Border.all(color: Colors.white24),
+                            ),
+                            child: const Icon(
+                              Icons.refresh_rounded,
+                              color: Colors.white70,
+                              size: 22,
                             ),
                           ),
                         ),
@@ -310,7 +306,7 @@ class _DualShotResultPreviewScreenState
                               : const Icon(Icons.download_done_rounded,
                                   color: Colors.black, size: 20),
                           label: Text(
-                            _isSaving ? 'ZAPISYWANIE...' : 'ZAPISZ ZDJĘCIE',
+                            _isSaving ? 'SAVING...' : 'SAVE PHOTO',
                             style: const TextStyle(
                               color: Colors.black,
                               fontSize: 13,
@@ -334,7 +330,7 @@ class _DualShotResultPreviewScreenState
 
                       // Share IconButton (right of Save)
                       Tooltip(
-                        message: 'Udostępnij',
+                        message: 'Share',
                         child: InkWell(
                           onTap: (_isSharing || _isSaving)
                               ? null
@@ -436,18 +432,13 @@ class _DualShotResultPreviewScreenState
 
     try {
       final file = XFile(activeImagePath);
-      await SharePlus.instance.share(
-        ShareParams(
-          files: [file],
-          text: 'Dual Shot – zrobione aplikacją DualShots 📸',
-        ),
-      );
+      await Share.shareXFiles([file]);
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             backgroundColor: const Color(0xFF321A1A),
-            content: Text('Błąd udostępniania: $e'),
+            content: Text('Share error: $e'),
           ),
         );
       }
@@ -470,7 +461,7 @@ class _DualShotResultPreviewScreenState
     try {
       final sourceFile = File(activeImagePath);
       if (!sourceFile.existsSync()) {
-        throw Exception('Plik źródłowy nie istnieje');
+        throw Exception('Source file does not exist');
       }
 
       // Save directly into Android MediaStore Gallery via native channel
@@ -484,7 +475,7 @@ class _DualShotResultPreviewScreenState
         _isSaving = false;
         _savedLocation = (savedPath is String && savedPath.isNotEmpty)
             ? savedPath
-            : 'Galeria -> Album DualShots';
+            : 'Gallery -> Album DualShots';
       });
 
       if (mounted) {
@@ -507,7 +498,7 @@ class _DualShotResultPreviewScreenState
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Zdjęcie zapisane w Galerii!',
+                        'Photo saved to Gallery!',
                         style: TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.bold,
@@ -515,7 +506,7 @@ class _DualShotResultPreviewScreenState
                         ),
                       ),
                       Text(
-                        'Sprawdź w aplikacji Galeria -> Album "DualShots"',
+                        'Check Gallery -> Album "DualShots"',
                         style: TextStyle(
                           color: Colors.white70,
                           fontSize: 11,
@@ -535,7 +526,7 @@ class _DualShotResultPreviewScreenState
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             backgroundColor: const Color(0xFF321A1A),
-            content: Text('Błąd zapisu: $e'),
+            content: Text('Save error: $e'),
           ),
         );
       }
@@ -568,7 +559,7 @@ class _DualShotResultPreviewScreenState
               ),
               const SizedBox(height: 18),
               const Text(
-                'Informacje o ujęciu',
+                'Shot Details',
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 18,
@@ -576,30 +567,30 @@ class _DualShotResultPreviewScreenState
                 ),
               ),
               const SizedBox(height: 16),
-              _buildInfoRow('Data wykonania', dateFormatted),
-              _buildInfoRow('Rozdzielczość',
+              _buildInfoRow('Captured Date', dateFormatted),
+              _buildInfoRow('Resolution',
                   '${widget.result.stitchedWidth} x ${widget.result.stitchedHeight} px'),
               _buildInfoRow(
-                'Główny aparat',
+                'Primary Camera',
                 widget.result.primaryLens == CameraLens.back
-                    ? 'Tylny (Główny)'
-                    : 'Przedni (Selfie)',
+                    ? 'Rear (Main)'
+                    : 'Front (Selfie)',
               ),
               _buildInfoRow(
-                'Pomocniczy aparat',
+                'Secondary Camera',
                 widget.result.secondaryLens == CameraLens.front
-                    ? 'Przedni (Selfie)'
-                    : 'Tylny (Główny)',
+                    ? 'Front (Selfie)'
+                    : 'Rear (Main)',
               ),
               _buildInfoRow(
-                'Tryb rejestracji',
+                'Capture Mode',
                 widget.result.operatingMode ==
                         DualCameraOperatingMode.concurrentMultiCamera
-                    ? 'Natywny Dual-Stream'
+                    ? 'Native Dual-Stream'
                     : 'Pseudo-Dual Fallback',
               ),
               _buildInfoRow(
-                'Lokalizacja pliku',
+                'File Path',
                 widget.result.stitchedImagePath,
                 isSmall: true,
               ),

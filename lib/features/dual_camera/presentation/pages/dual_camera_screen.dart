@@ -1,10 +1,16 @@
+import 'dart:io';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:path/path.dart' as p;
+import 'package:path_provider/path_provider.dart';
 
 import '../../../../core/services/lifecycle_manager.dart';
 import '../../../../injection_container.dart';
 import '../../domain/entities/camera_types.dart';
+import '../../domain/entities/dual_shot_result.dart';
+import '../../domain/entities/pip_layout_config.dart';
 import '../../domain/repositories/dual_camera_repository.dart';
 import '../bloc/dual_camera_bloc.dart';
 import '../bloc/dual_camera_event.dart';
@@ -13,6 +19,7 @@ import '../widgets/camera_overlay_controls.dart';
 import '../widgets/dual_camera_preview_viewport.dart';
 import '../widgets/dual_camera_tutorial_helper.dart';
 import '../widgets/shutter_button.dart';
+import 'demo_camera_screen.dart';
 import 'dual_shot_result_preview_screen.dart';
 
 class DualCameraScreen extends StatefulWidget {
@@ -88,11 +95,27 @@ class _DualCameraScreenState extends State<DualCameraScreen>
     } catch (_) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text('Otwieranie galerii zdjęć...'),
+          content: Text('Opening photo gallery...'),
           backgroundColor: Color(0xFF1E222A),
         ),
       );
     }
+  }
+
+  /// Copies a bundled asset to a temp file and returns its path.
+  Future<String> _assetToTempFile(String assetPath, String filename) async {
+    final bytes = await rootBundle.load(assetPath);
+    final temp = await getTemporaryDirectory();
+    final file = File(p.join(temp.path, filename));
+    await file.writeAsBytes(bytes.buffer.asUint8List());
+    return file.path;
+  }
+
+  Future<void> _openDemoPreview() async {
+    HapticFeedback.mediumImpact();
+    Navigator.of(context).push(
+      MaterialPageRoute(builder: (_) => const DemoCameraScreen()),
+    );
   }
 
   @override
@@ -205,32 +228,67 @@ class _DualCameraScreenState extends State<DualCameraScreen>
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        // Left utility icon: System Photo Gallery Button
-                        GestureDetector(
-                          key: _keyGallery,
-                          onTap: _openSystemGallery,
-                          child: Container(
-                            width: 52,
-                            height: 52,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: const Color(0xFF1E1E28).withOpacity(0.85),
-                              border: Border.all(
-                                  color: Colors.white30, width: 1.5),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.black.withOpacity(0.4),
-                                  blurRadius: 10,
-                                  offset: const Offset(0, 3),
+                        // Left utility icons: Gallery + Demo
+                        Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            GestureDetector(
+                              key: _keyGallery,
+                              onTap: _openSystemGallery,
+                              child: Container(
+                                width: 52,
+                                height: 52,
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: const Color(0xFF1E1E28).withOpacity(0.85),
+                                  border: Border.all(
+                                      color: Colors.white30, width: 1.5),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.black.withOpacity(0.4),
+                                      blurRadius: 10,
+                                      offset: const Offset(0, 3),
+                                    ),
+                                  ],
                                 ),
-                              ],
+                                child: const Icon(
+                                  Icons.photo_library_outlined,
+                                  color: Colors.white,
+                                  size: 24,
+                                ),
+                              ),
                             ),
-                            child: const Icon(
-                              Icons.photo_library_outlined,
-                              color: Colors.white,
-                              size: 24,
-                            ),
-                          ),
+                            if (kDebugMode) ...[
+                              const SizedBox(height: 6),
+                              // Demo preview button
+                              GestureDetector(
+                                onTap: _openDemoPreview,
+                                child: Container(
+                                  width: 38,
+                                  height: 22,
+                                  decoration: BoxDecoration(
+                                    color: const Color(0xFFFFB800).withOpacity(0.15),
+                                    borderRadius: BorderRadius.circular(11),
+                                    border: Border.all(
+                                      color: const Color(0xFFFFB800).withOpacity(0.7),
+                                      width: 1,
+                                    ),
+                                  ),
+                                  child: const Center(
+                                    child: Text(
+                                      'DEMO',
+                                      style: TextStyle(
+                                        color: Color(0xFFFFB800),
+                                        fontSize: 8,
+                                        fontWeight: FontWeight.w900,
+                                        letterSpacing: 0.5,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ],
                         ),
 
                         // Center: Animated Shutter Button with stitching progress
@@ -311,8 +369,8 @@ class _DualCameraScreenState extends State<DualCameraScreen>
                               const SizedBox(width: 14),
                               Text(
                                 state.isCapturing
-                                    ? 'Uchwytywanie kadrów...'
-                                    : 'Łączenie w tle (Isolate)...',
+                                    ? 'Capturing frames...'
+                                    : 'Stitching in background (Isolate)...',
                                 style: const TextStyle(
                                   color: Colors.white,
                                   fontSize: 14,
@@ -357,7 +415,7 @@ class _DualCameraScreenState extends State<DualCameraScreen>
               ),
               const SizedBox(height: 24),
               const Text(
-                'Wymagany dostęp do aparatu',
+                'Camera Access Required',
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 20,
@@ -368,7 +426,7 @@ class _DualCameraScreenState extends State<DualCameraScreen>
               const SizedBox(height: 12),
               Text(
                 state.errorMessage ??
-                    'Aplikacja Dual Shots wymaga uprawnień do kamery i mikrofonu, aby rejestrować ujęcia z dwóch sensorów.',
+                    'DualShots requires camera and microphone permissions to capture dual sensor shots.',
                 style: const TextStyle(color: Colors.white70, fontSize: 14),
                 textAlign: TextAlign.center,
               ),
@@ -383,8 +441,8 @@ class _DualCameraScreenState extends State<DualCameraScreen>
                 },
                 icon: const Icon(Icons.security_rounded),
                 label: Text(state.isPermissionPermanentlyDenied
-                    ? 'Otwórz Ustawienia'
-                    : 'Przyznaj uprawnienia'),
+                    ? 'Open Settings'
+                    : 'Grant Permissions'),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xFFFFB800),
                   foregroundColor: Colors.black,
