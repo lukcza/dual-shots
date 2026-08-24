@@ -1,20 +1,93 @@
 <?xml version="1.0" encoding="utf-8"?>
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt"
     android:width="108dp"
     android:height="108dp"
     android:viewportWidth="108"
     android:viewportHeight="108">
+    
     <group
-        android:scaleX="0.6"
-        android:scaleY="0.6"
-        android:translateX="21.6"
-        android:translateY="21.6">
-        <!-- Dual Camera Icon Vector -->
+        android:scaleX="0.14"
+        android:scaleY="0.14"
+        android:translateX="18.2"
+        android:translateY="18.2">
+
+        <!-- Left Lens (Rear Camera - Gold Gradient) -->
+        <!-- Outer Gold Ring -->
+        <path
+            android:strokeWidth="16"
+            android:strokeColor="#FFB800"
+            android:fillColor="#00000000"
+            android:pathData="M 195,256 m -95,0 a 95,95 0 1,0 190,0 a 95,95 0 1,0 -190,0"/>
+        
+        <!-- Mid Gold Accent Ring -->
+        <path
+            android:strokeWidth="5"
+            android:strokeColor="#FFE082"
+            android:strokeAlpha="0.6"
+            android:fillColor="#00000000"
+            android:pathData="M 195,256 m -62,0 a 62,62 0 1,0 124,0 a 62,62 0 1,0 -124,0"/>
+        
+        <!-- Left Center Dot -->
         <path
             android:fillColor="#FFB800"
-            android:pathData="M80,28h-9.17l-3.66,-4h-24.34l-3.66,4H16c-4.42,0 -8,3.58 -8,8v48c0,4.42 3.58,8 8,8h64c4.42,0 8,-3.58 8,-8V36c0,-4.42 -3.58,-8 -8,-8zM48,76c-11.05,0 -20,-8.95 -20,-20s8.95,-20 20,-20 20,8.95 20,20 -8.95,20 -20,20z"/>
+            android:pathData="M 195,256 m -22,0 a 22,22 0 1,0 44,0 a 22,22 0 1,0 -44,0"/>
+
+        <!-- Right Lens (Front Selfie Camera - Clean White / Chrome) -->
+        <!-- Outer White Ring -->
         <path
-            android:fillColor="#00E5FF"
-            android:pathData="M48,42c-7.73,0 -14,6.27 -14,14s6.27,14 14,14 14,-6.27 14,-14 -6.27,-14 -14,-14z"/>
+            android:strokeWidth="16"
+            android:strokeColor="#FFFFFF"
+            android:strokeAlpha="0.9"
+            android:fillColor="#00000000"
+            android:pathData="M 317,256 m -95,0 a 95,95 0 1,0 190,0 a 95,95 0 1,0 -190,0"/>
+        
+        <!-- Mid White Accent Ring -->
+        <path
+            android:strokeWidth="5"
+            android:strokeColor="#FFFFFF"
+            android:strokeAlpha="0.4"
+            android:fillColor="#00000000"
+            android:pathData="M 317,256 m -62,0 a 62,62 0 1,0 124,0 a 62,62 0 1,0 -124,0"/>
+        
+        <!-- Right Center Dot -->
+        <path
+            android:fillColor="#FFFFFF"
+            android:pathData="M 317,256 m -22,0 a 22,22 0 1,0 44,0 a 22,22 0 1,0 -44,0"/>
+
+        <!-- Center Intersecting Glow -->
+        <path
+            android:fillColor="#FFB800"
+            android:fillAlpha="0.25"
+            android:pathData="M 256,195 A 95,95 0 0,1 256,317 A 95,95 0 0,1 256,195 Z"/>
+
+        <!-- Viewfinder Corner Accents -->
+        <path
+            android:strokeWidth="6"
+            android:strokeColor="#FFB800"
+            android:strokeLineCap="round"
+            android:fillColor="#00000000"
+            android:pathData="M 70,120 L 70,85 L 105,85"/>
+        <path
+            android:strokeWidth="6"
+            android:strokeColor="#FFFFFF"
+            android:strokeAlpha="0.7"
+            android:strokeLineCap="round"
+            android:fillColor="#00000000"
+            android:pathData="M 442,120 L 442,85 L 407,85"/>
+        <path
+            android:strokeWidth="6"
+            android:strokeColor="#FFB800"
+            android:strokeLineCap="round"
+            android:fillColor="#00000000"
+            android:pathData="M 70,392 L 70,427 L 105,427"/>
+        <path
+            android:strokeWidth="6"
+            android:strokeColor="#FFFFFF"
+            android:strokeAlpha="0.7"
+            android:strokeLineCap="round"
+            android:fillColor="#00000000"
+            android:pathData="M 442,392 L 442,427 L 407,427"/>
+
     </group>
 </vector>

@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bg2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#181824"/>
+      <stop offset="100%" stop-color="#0A0A0E"/>
+    </linearGradient>
+
+    <linearGradient id="gold2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFE57F"/>
+      <stop offset="50%" stop-color="#FFB800"/>
+      <stop offset="100%" stop-color="#FF9100"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background Squircle -->
+  <rect width="512" height="512" rx="112" fill="url(#bg2)" stroke="#282838" stroke-width="2"/>
+
+  <!-- Minimal Camera Body Outline -->
+  <path d="M 175 130 
+           L 205 130 
+           C 215 130, 222 142, 230 152 
+           C 236 160, 246 164, 256 164 
+           L 370 164 
+           C 408 164, 438 194, 438 232 
+           L 438 354 
+           C 438 392, 408 422, 370 422 
+           L 142 422 
+           C 104 422, 74 392, 74 354 
+           L 74 232 
+           C 74 194, 104 164, 142 164 
+           L 165 164 
+           C 172 164, 178 158, 180 150 
+           Z" 
+        fill="none" 
+        stroke="#FFFFFF" 
+        stroke-width="12" 
+        stroke-linecap="round" 
+        stroke-linejoin="round"/>
+
+  <!-- Main Primary Lens (Center Large) -->
+  <circle cx="236" cy="293" r="82" fill="#101018" stroke="url(#gold2)" stroke-width="14"/>
+  <circle cx="236" cy="293" r="46" fill="#181826" stroke="#FFFFFF" stroke-width="4" stroke-opacity="0.3"/>
+  <circle cx="236" cy="293" r="18" fill="url(#gold2)"/>
+
+  <!-- Secondary Selfie Lens (Upper Right Front Camera Indicator) -->
+  <circle cx="370" cy="220" r="28" fill="#101018" stroke="#FFFFFF" stroke-width="6"/>
+  <circle cx="370" cy="220" r="12" fill="url(#gold2)"/>
+
+  <!-- Top Shutter Release Button -->
+  <rect x="130" y="112" width="46" height="18" rx="8" fill="url(#gold2)"/>
+
+  <!-- Flash LED Dot -->
+  <circle cx="320" cy="200" r="7" fill="#FFB800"/>
+</svg>

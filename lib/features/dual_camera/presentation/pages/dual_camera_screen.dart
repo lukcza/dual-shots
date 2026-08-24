@@ -5,6 +5,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../core/services/lifecycle_manager.dart';
 import '../../../../injection_container.dart';
 import '../../domain/entities/camera_types.dart';
+import '../../domain/entities/dual_shot_result.dart';
+import '../../domain/entities/pip_layout_config.dart';
 import '../../domain/repositories/dual_camera_repository.dart';
 import '../bloc/dual_camera_bloc.dart';
 import '../bloc/dual_camera_event.dart';
@@ -12,6 +14,7 @@ import '../bloc/dual_camera_state.dart';
 import '../widgets/camera_overlay_controls.dart';
 import '../widgets/dual_camera_preview_viewport.dart';
 import '../widgets/dual_camera_tutorial_helper.dart';
+import '../widgets/privacy_policy_sheet.dart';
 import '../widgets/shutter_button.dart';
 import 'dual_shot_result_preview_screen.dart';
 
@@ -66,6 +69,138 @@ class _DualCameraScreenState extends State<DualCameraScreen>
   @override
   void onAppInactive() {}
 
+  void _showInfoMenu() {
+    HapticFeedback.mediumImpact();
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: const Color(0xFF14141C),
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+      ),
+      builder: (ctx) {
+        return SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(20, 16, 20, 24),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                // Handle
+                Center(
+                  child: Container(
+                    width: 38,
+                    height: 4,
+                    decoration: BoxDecoration(
+                      color: Colors.white24,
+                      borderRadius: BorderRadius.circular(2),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 18),
+                const Text(
+                  'Help & Information',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w800,
+                    letterSpacing: 0.5,
+                  ),
+                ),
+                const SizedBox(height: 16),
+
+                // Option 1: App Tutorial
+                _buildInfoOptionTile(
+                  icon: Icons.school_rounded,
+                  iconColor: const Color(0xFFFFB800),
+                  title: 'Interactive Tutorial',
+                  subtitle: 'Learn how to drag, resize, and capture Dual Shots',
+                  onTap: () {
+                    Navigator.of(ctx).pop();
+                    Future.delayed(const Duration(milliseconds: 250), () {
+                      if (mounted) _showTutorialCoachMark();
+                    });
+                  },
+                ),
+                const SizedBox(height: 10),
+
+                // Option 2: Privacy Policy
+                _buildInfoOptionTile(
+                  icon: Icons.shield_outlined,
+                  iconColor: const Color(0xFF00E676),
+                  title: 'Privacy Policy',
+                  subtitle: '100% on-device processing • Zero data tracking',
+                  onTap: () {
+                    Navigator.of(ctx).pop();
+                    Future.delayed(const Duration(milliseconds: 250), () {
+                      if (mounted) PrivacyPolicySheet.show(context);
+                    });
+                  },
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildInfoOptionTile({
+    required IconData icon,
+    required Color iconColor,
+    required String title,
+    required String subtitle,
+    required VoidCallback onTap,
+  }) {
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(16),
+      child: Container(
+        padding: const EdgeInsets.all(14),
+        decoration: BoxDecoration(
+          color: const Color(0xFF1E1E2A),
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(color: Colors.white12),
+        ),
+        child: Row(
+          children: [
+            Container(
+              padding: const EdgeInsets.all(10),
+              decoration: BoxDecoration(
+                color: iconColor.withOpacity(0.12),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Icon(icon, color: iconColor, size: 22),
+            ),
+            const SizedBox(width: 14),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    title,
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(height: 2),
+                  Text(
+                    subtitle,
+                    style: const TextStyle(
+                      color: Colors.white60,
+                      fontSize: 11,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const Icon(Icons.chevron_right_rounded, color: Colors.white38),
+          ],
+        ),
+      ),
+    );
+  }
+
   void _showTutorialCoachMark() {
     HapticFeedback.mediumImpact();
     final tutorial = DualCameraTutorialHelper.createTutorial(
@@ -88,7 +223,7 @@ class _DualCameraScreenState extends State<DualCameraScreen>
     } catch (_) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text('Otwieranie galerii zdjęć...'),
+          content: Text('Opening photo gallery...'),
           backgroundColor: Color(0xFF1E222A),
         ),
       );
@@ -180,7 +315,7 @@ class _DualCameraScreenState extends State<DualCameraScreen>
                     onSwitchRoles: () {
                       _cameraBloc.add(const SwitchCameraRolesEvent());
                     },
-                    onInfoPressed: _showTutorialCoachMark,
+                    onInfoPressed: _showInfoMenu,
                   ),
                 ),
 
@@ -311,8 +446,8 @@ class _DualCameraScreenState extends State<DualCameraScreen>
                               const SizedBox(width: 14),
                               Text(
                                 state.isCapturing
-                                    ? 'Uchwytywanie kadrów...'
-                                    : 'Łączenie w tle (Isolate)...',
+                                    ? 'Capturing frames...'
+                                    : 'Stitching in background (Isolate)...',
                                 style: const TextStyle(
                                   color: Colors.white,
                                   fontSize: 14,
@@ -357,7 +492,7 @@ class _DualCameraScreenState extends State<DualCameraScreen>
               ),
               const SizedBox(height: 24),
               const Text(
-                'Wymagany dostęp do aparatu',
+                'Camera Access Required',
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 20,
@@ -368,7 +503,7 @@ class _DualCameraScreenState extends State<DualCameraScreen>
               const SizedBox(height: 12),
               Text(
                 state.errorMessage ??
-                    'Aplikacja Dual Shots wymaga uprawnień do kamery i mikrofonu, aby rejestrować ujęcia z dwóch sensorów.',
+                    'DualShots requires camera and microphone permissions to capture dual sensor shots.',
                 style: const TextStyle(color: Colors.white70, fontSize: 14),
                 textAlign: TextAlign.center,
               ),
@@ -383,8 +518,8 @@ class _DualCameraScreenState extends State<DualCameraScreen>
                 },
                 icon: const Icon(Icons.security_rounded),
                 label: Text(state.isPermissionPermanentlyDenied
-                    ? 'Otwórz Ustawienia'
-                    : 'Przyznaj uprawnienia'),
+                    ? 'Open Settings'
+                    : 'Grant Permissions'),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xFFFFB800),
                   foregroundColor: Colors.black,

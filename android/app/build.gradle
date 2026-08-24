@@ -12,6 +12,14 @@ if (localPropertiesFile.exists()) {
     }
 }
 
+def keyProperties = new Properties()
+def keyPropertiesFile = rootProject.file('key.properties')
+if (keyPropertiesFile.exists()) {
+    keyPropertiesFile.withReader('UTF-8') { reader ->
+        keyProperties.load(reader)
+    }
+}
+
 def flutterVersionCode = localProperties.getProperty('flutter.versionCode')
 if (flutterVersionCode == null) {
     flutterVersionCode = '1'
@@ -23,7 +31,7 @@ if (flutterVersionName == null) {
 }
 
 android {
-    namespace "com.example.dual_shots"
+    namespace "com.kodaio.dualshots"
     compileSdk 36
     ndkVersion flutter.ndkVersion
 
@@ -40,8 +48,17 @@ android {
         main.java.srcDirs += 'src/main/kotlin'
     }
 
+    signingConfigs {
+        release {
+            keyAlias keyProperties['keyAlias']
+            keyPassword keyProperties['keyPassword']
+            storeFile keyProperties['storeFile'] ? rootProject.file(keyProperties['storeFile']) : null
+            storePassword keyProperties['storePassword']
+        }
+    }
+
     defaultConfig {
-        applicationId "com.example.dual_shots"
+        applicationId "com.kodaio.dualshots"
         minSdkVersion 28
         targetSdkVersion 36
         versionCode flutterVersionCode.toInteger()
@@ -50,7 +67,9 @@ android {
 
     buildTypes {
         release {
-            signingConfig signingConfigs.debug
+            signingConfig signingConfigs.release
+            minifyEnabled false
+            shrinkResources false
         }
     }
 }

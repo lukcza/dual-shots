@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>DualShots - SVG Logo Concepts</title>
+  <style>
+    body {
+      background-color: #08080C;
+      color: #FFFFFF;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 40px 20px;
+      margin: 0;
+    }
+    h1 {
+      font-size: 28px;
+      font-weight: 800;
+      letter-spacing: 1px;
+      margin-bottom: 8px;
+    }
+    h1 span {
+      color: #FFB800;
+    }
+    p {
+      color: #888899;
+      font-size: 14px;
+      margin-bottom: 40px;
+    }
+    .grid {
+      display: flex;
+      gap: 32px;
+      flex-wrap: wrap;
+      justify-content: center;
+      max-width: 1000px;
+    }
+    .card {
+      background: #12121A;
+      border: 1px solid #222230;
+      border-radius: 24px;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 260px;
+      transition: transform 0.2s, border-color 0.2s;
+    }
+    .card:hover {
+      transform: translateY(-4px);
+      border-color: #FFB800;
+    }
+    .svg-container {
+      width: 180px;
+      height: 180px;
+      margin-bottom: 20px;
+    }
+    .card h3 {
+      font-size: 16px;
+      margin: 0 0 6px 0;
+      color: #FFFFFF;
+    }
+    .card p {
+      font-size: 12px;
+      color: #777788;
+      text-align: center;
+      margin: 0;
+      line-height: 1.4;
+    }
+    .badge {
+      margin-top: 14px;
+      padding: 4px 10px;
+      background: rgba(255, 184, 0, 0.12);
+      border: 1px solid rgba(255, 184, 0, 0.4);
+      color: #FFB800;
+      border-radius: 12px;
+      font-size: 11px;
+      font-weight: 700;
+    }
+  </style>
+</head>
+<body>
+  <h1>Dual<span>Shots</span> – Minimalist SVG Logos</h1>
+  <p>Czyste, wektorowe warianty gotowe do użycia jako ikona aplikacji (Android / iOS / Play Store)</p>
+
+  <div class="grid">
+    <!-- Wariant 1 -->
+    <div class="card">
+      <div class="svg-container">
+        <!-- Embedded SVG 1 -->
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="100%" height="100%">
+          <defs>
+            <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#14141C"/>
+              <stop offset="100%" stop-color="#08080C"/>
+            </linearGradient>
+            <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#FFE082"/>
+              <stop offset="50%" stop-color="#FFB800"/>
+              <stop offset="100%" stop-color="#FF8F00"/>
+            </linearGradient>
+            <linearGradient id="lensGlass" x1="20%" y1="20%" x2="80%" y2="80%">
+              <stop offset="0%" stop-color="#2A2A38" stop-opacity="0.8"/>
+              <stop offset="100%" stop-color="#101018" stop-opacity="0.9"/>
+            </linearGradient>
+          </defs>
+          <rect width="512" height="512" rx="112" fill="url(#bgGrad)" stroke="#222230" stroke-width="3"/>
+          <circle cx="224" cy="256" r="130" fill="url(#lensGlass)" stroke="#2C2C3C" stroke-width="6"/>
+          <circle cx="224" cy="256" r="112" fill="none" stroke="url(#goldGrad)" stroke-width="10"/>
+          <circle cx="224" cy="256" r="88" fill="#0C0C14" stroke="#3A3A4C" stroke-width="3"/>
+          <g stroke="url(#goldGrad)" stroke-width="3.5" stroke-linecap="round" opacity="0.85">
+            <line x1="224" y1="168" x2="278" y2="218" />
+            <line x1="278" y1="218" x2="270" y2="290" />
+            <line x1="270" y1="290" x2="204" y2="310" />
+            <line x1="204" y1="310" x2="152" y2="264" />
+            <line x1="152" y1="264" x2="168" y2="198" />
+            <line x1="168" y1="198" x2="224" y2="168" />
+          </g>
+          <circle cx="224" cy="256" r="26" fill="url(#goldGrad)" opacity="0.9"/>
+          <rect x="290" y="270" width="138" height="138" rx="36" fill="#06060A" opacity="0.7"/>
+          <rect x="286" y="266" width="138" height="138" rx="36" fill="#181824" stroke="#FFFFFF" stroke-width="6"/>
+          <circle cx="355" cy="335" r="44" fill="#0A0A12" stroke="url(#goldGrad)" stroke-width="5"/>
+          <circle cx="355" cy="335" r="10" fill="url(#goldGrad)"/>
+          <circle cx="385" cy="120" r="10" fill="#FFB800"/>
+        </svg>
+      </div>
+      <h3>1. Dual Lens + PiP</h3>
+      <p>Główny duży obiektyw z przysłoną oraz nakładające się okienko selfie PiP.</p>
+      <span class="badge">Polecane</span>
+    </div>
+
+    <!-- Wariant 2 -->
+    <div class="card">
+      <div class="svg-container">
+        <!-- Embedded SVG 2 -->
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="100%" height="100%">
+          <defs>
+            <linearGradient id="bg2" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#181824"/>
+              <stop offset="100%" stop-color="#0A0A0E"/>
+            </linearGradient>
+            <linearGradient id="gold2" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#FFE57F"/>
+              <stop offset="50%" stop-color="#FFB800"/>
+              <stop offset="100%" stop-color="#FF9100"/>
+            </linearGradient>
+          </defs>
+          <rect width="512" height="512" rx="112" fill="url(#bg2)" stroke="#282838" stroke-width="2"/>
+          <path d="M 175 130 L 205 130 C 215 130, 222 142, 230 152 C 236 160, 246 164, 256 164 L 370 164 C 408 164, 438 194, 438 232 L 438 354 C 438 392, 408 422, 370 422 L 142 422 C 104 422, 74 392, 74 354 L 74 232 C 74 194, 104 164, 142 164 L 165 164 C 172 164, 178 158, 180 150 Z" 
+                fill="none" stroke="#FFFFFF" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="236" cy="293" r="82" fill="#101018" stroke="url(#gold2)" stroke-width="14"/>
+          <circle cx="236" cy="293" r="18" fill="url(#gold2)"/>
+          <circle cx="370" cy="220" r="28" fill="#101018" stroke="#FFFFFF" stroke-width="6"/>
+          <circle cx="370" cy="220" r="12" fill="url(#gold2)"/>
+          <rect x="130" y="112" width="46" height="18" rx="8" fill="url(#gold2)"/>
+          <circle cx="320" cy="200" r="7" fill="#FFB800"/>
+        </svg>
+      </div>
+      <h3>2. Minimal Camera</h3>
+      <p>Geometryczny obrys aparatu z dwoma obiektywami i przyciskiem migawki.</p>
+      <span class="badge">Klasyczny</span>
+    </div>
+
+    <!-- Wariant 3 -->
+    <div class="card">
+      <div class="svg-container">
+        <!-- Embedded SVG 3 -->
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="100%" height="100%">
+          <defs>
+            <linearGradient id="gold3" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#FFE082"/>
+              <stop offset="50%" stop-color="#FFB800"/>
+              <stop offset="100%" stop-color="#FF9100"/>
+            </linearGradient>
+          </defs>
+          <rect width="512" height="512" rx="112" fill="#0A0A0E" stroke="#22222E" stroke-width="2"/>
+          <circle cx="195" cy="256" r="95" fill="none" stroke="url(#gold3)" stroke-width="16"/>
+          <circle cx="195" cy="256" r="22" fill="url(#gold3)"/>
+          <circle cx="317" cy="256" r="95" fill="none" stroke="#FFFFFF" stroke-width="16" stroke-opacity="0.9"/>
+          <circle cx="317" cy="256" r="22" fill="#FFFFFF"/>
+          <path d="M 256 195 A 95 95 0 0 1 256 317 A 95 95 0 0 1 256 195 Z" fill="url(#gold3)" fill-opacity="0.18"/>
+          <path d="M 70 120 L 70 85 L 105 85" fill="none" stroke="url(#gold3)" stroke-width="4" stroke-linecap="round"/>
+          <path d="M 442 120 L 442 85 L 407 85" fill="none" stroke="#FFFFFF" stroke-width="4" stroke-opacity="0.6" stroke-linecap="round"/>
+          <path d="M 70 392 L 70 427 L 105 427" fill="none" stroke="url(#gold3)" stroke-width="4" stroke-linecap="round"/>
+          <path d="M 442 392 L 442 427 L 407 427" fill="none" stroke="#FFFFFF" stroke-width="4" stroke-opacity="0.6" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <h3>3. Infinity Dual Lens</h3>
+      <p>Dwa splecione pierścienie obiektywów (Złoty Tył + Biały Przód) z narożnikami kadru.</p>
+      <span class="badge">Minimalistyczny</span>
+    </div>
+  </div>
+</body>
+</html>
